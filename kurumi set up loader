@@ -60,10 +60,19 @@ screenGui.Parent = game:GetService("CoreGui")
 -- Create container frame (for background and outline)
 local frame = Instance.new("Frame")
 frame.Parent = screenGui
-frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- darkish gray background
+frame.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3) -- base gray color
 frame.BorderSizePixel = 0
 frame.Position = UDim2.new(0.5, 0, 0, -50)
 frame.Size = UDim2.new(0, 0, 0, 24)
+
+-- Add grayish gradient background
+local gradient = Instance.new("UIGradient")
+gradient.Parent = frame
+gradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.new(0.4, 0.4, 0.4)), -- lighter gray
+    ColorSequenceKeypoint.new(1, Color3.new(0.2, 0.2, 0.2))  -- darker gray
+})
+gradient.Rotation = 90 -- vertical gradient
 
 -- Add red outline to frame (thinner)
 local stroke = Instance.new("UIStroke")
@@ -71,16 +80,13 @@ stroke.Thickness = 1 -- thinner inline
 stroke.Color = Color3.new(1, 0, 0)
 stroke.Parent = frame
 
--- Add glow effect to frame
-local glow = Instance.new("ImageLabel")
-glow.Parent = screenGui
-glow.Size = UDim2.new(1, 20, 1, 20) -- slightly larger for glow
-glow.Position = UDim2.new(0, -10, 0, -10)
-glow.BackgroundTransparency = 1
-glow.Image = "rbxassetid://499689197" -- glow texture
-glow.ImageColor3 = Color3.new(1, 0, 0) -- red glow
-glow.ImageTransparency = 0.7
-glow.ZIndex = frame.ZIndex - 1 -- behind the frame
+-- Add glow effect to frame (around the frame)
+local glowStroke = Instance.new("UIStroke")
+glowStroke.Parent = frame
+glowStroke.Thickness = 3
+glowStroke.Color = Color3.new(1, 0, 0) -- red glow
+glowStroke.Transparency = 0.3
+glowStroke.LineJoinMode = Enum.LineJoinMode.Round
 
 -- Add text label (inside frame)
 local textLabel = Instance.new("TextLabel")
@@ -150,10 +156,6 @@ RunService.RenderStepped:Connect(function()
 	frame.Size = UDim2.new(0, textSize.X + 20, 0, textSize.Y + 8)
 	frame.Position = UDim2.new(0.5, -(frame.Size.X.Offset / 2), 0, -50)
 	
-	-- Update glow position and size to match frame
-	glow.Size = UDim2.new(0, frame.Size.X.Offset + 20, 0, frame.Size.Y.Offset + 20)
-	glow.Position = UDim2.new(0, frame.Position.X.Offset - 10, 0, frame.Position.Y.Offset - 10)
-	
 	-- Smooth neon-like flash using sine wave
 	local t = tick() * flashSpeed
 	local glowIntensity = (math.sin(t) + 1) / 2 -- 0 to 1
@@ -165,44 +167,12 @@ RunService.RenderStepped:Connect(function()
 	stroke.Color = color
 	stroke.Transparency = transparency
 	
-	-- Update glow color and transparency
-	glow.ImageColor3 = color
-	glow.ImageTransparency = 0.7 - (glowIntensity * 0.3) -- glow gets more intense
+	-- Update glow stroke transparency and color
+	glowStroke.Color = color
+	glowStroke.Transparency = 0.3 - (glowIntensity * 0.2) -- glow gets more intense
 end)
 
--- kurumi spinning decal
-local decalScreenGui = Instance.new("ScreenGui")
-decalScreenGui.Name = "KurumiSpinningDecal"
-decalScreenGui.ResetOnSpawn = false
-decalScreenGui.Parent = game:GetService("CoreGui")
 
-
-
--- Create the decal
-local decal = Instance.new("Decal")
-decal.Parent = decalFrame
-decal.Texture = "rbxassetid://82890961202436"
-decal.Face = Enum.NormalId.Front
-decal.Size = Vector2.new(1, 1)
-
--- Add a subtle glow effect
-local glowStroke = Instance.new("UIStroke")
-glowStroke.Thickness = 2
-glowStroke.Color = Color3.fromRGB(255, 100, 100)
-glowStroke.Transparency = 0.5
-glowStroke.Parent = decalFrame
-
--- Make the decal spin continuously
-local rotationSpeed = 2 -- Speed of rotation
-RunService.RenderStepped:Connect(function()
-    local time = tick() * rotationSpeed
-    local rotation = (time * 360) % 360
-    
-    -- Apply rotation using UIGradient rotation (since we can't rotate decals directly)
-    local gradient = Instance.new("UIGradient")
-    gradient.Rotation = rotation
-    gradient.Parent = decalFrame
-end)
 
  -- kurumi image loader 
 
