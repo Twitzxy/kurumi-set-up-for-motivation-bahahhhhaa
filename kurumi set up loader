@@ -60,16 +60,27 @@ screenGui.Parent = game:GetService("CoreGui")
 -- Create container frame (for background and outline)
 local frame = Instance.new("Frame")
 frame.Parent = screenGui
-frame.BackgroundColor3 = Color3.new(0, 0, 0) -- black background
+frame.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2) -- darkish gray background
 frame.BorderSizePixel = 0
 frame.Position = UDim2.new(0.5, 0, 0, -50)
 frame.Size = UDim2.new(0, 0, 0, 24)
 
--- Add red outline to frame
+-- Add red outline to frame (thinner)
 local stroke = Instance.new("UIStroke")
-stroke.Thickness = 2
+stroke.Thickness = 1 -- thinner inline
 stroke.Color = Color3.new(1, 0, 0)
 stroke.Parent = frame
+
+-- Add glow effect to frame
+local glow = Instance.new("ImageLabel")
+glow.Parent = screenGui
+glow.Size = UDim2.new(1, 20, 1, 20) -- slightly larger for glow
+glow.Position = UDim2.new(0, -10, 0, -10)
+glow.BackgroundTransparency = 1
+glow.Image = "rbxassetid://499689197" -- glow texture
+glow.ImageColor3 = Color3.new(1, 0, 0) -- red glow
+glow.ImageTransparency = 0.7
+glow.ZIndex = frame.ZIndex - 1 -- behind the frame
 
 -- Add text label (inside frame)
 local textLabel = Instance.new("TextLabel")
@@ -139,16 +150,24 @@ RunService.RenderStepped:Connect(function()
 	frame.Size = UDim2.new(0, textSize.X + 20, 0, textSize.Y + 8)
 	frame.Position = UDim2.new(0.5, -(frame.Size.X.Offset / 2), 0, -50)
 	
+	-- Update glow position and size to match frame
+	glow.Size = UDim2.new(0, frame.Size.X.Offset + 20, 0, frame.Size.Y.Offset + 20)
+	glow.Position = UDim2.new(0, frame.Position.X.Offset - 10, 0, frame.Position.Y.Offset - 10)
+	
 	-- Smooth neon-like flash using sine wave
 	local t = tick() * flashSpeed
-	local glow = (math.sin(t) + 1) / 2 -- 0 to 1
-	local color = Color3.new(1, glow, 0) -- red to yellow
-	local transparency = glow * fadeMax -- fade effect
+	local glowIntensity = (math.sin(t) + 1) / 2 -- 0 to 1
+	local color = Color3.new(1, glowIntensity, 0) -- red to yellow
+	local transparency = glowIntensity * fadeMax -- fade effect
 
 	textLabel.TextColor3 = color
 	textLabel.TextTransparency = transparency
 	stroke.Color = color
 	stroke.Transparency = transparency
+	
+	-- Update glow color and transparency
+	glow.ImageColor3 = color
+	glow.ImageTransparency = 0.7 - (glowIntensity * 0.3) -- glow gets more intense
 end)
 
 -- kurumi spinning decal
@@ -189,11 +208,6 @@ RunService.RenderStepped:Connect(function()
     local gradient = Instance.new("UIGradient")
     gradient.Rotation = rotation
     gradient.Parent = decalFrame
-    
-    -- Also add a subtle scale animation
-    local scale = 1 + math.sin(time * 3) * 0.1
-    decalFrame.Size = UDim2.new(0, 40 * scale, 0, 40 * scale)
-    decalFrame.Position = UDim2.new(0.5, -20 * scale, 0, -80 * scale)
 end)
 
  -- kurumi image loader 
