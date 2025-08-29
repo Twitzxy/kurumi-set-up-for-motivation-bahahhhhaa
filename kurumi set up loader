@@ -176,12 +176,7 @@ decalScreenGui.Name = "KurumiSpinningDecal"
 decalScreenGui.ResetOnSpawn = false
 decalScreenGui.Parent = game:GetService("CoreGui")
 
--- Create a small frame to hold the decal
-local decalFrame = Instance.new("Frame")
-decalFrame.Parent = decalScreenGui
-decalFrame.Position = UDim2.new(0.5, -20, 0, -80) -- Position above watermark
-decalFrame.BackgroundTransparency = 1
-decalFrame.BorderSizePixel = 0
+
 
 -- Create the decal
 local decal = Instance.new("Decal")
