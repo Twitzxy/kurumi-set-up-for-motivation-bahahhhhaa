@@ -88,6 +88,21 @@ glowStroke.Color = Color3.new(1, 0, 0) -- red glow
 glowStroke.Transparency = 0.3
 glowStroke.LineJoinMode = Enum.LineJoinMode.Round
 
+-- Add additional glow layers for better effect
+local glowLayer1 = Instance.new("UIStroke")
+glowLayer1.Parent = frame
+glowLayer1.Thickness = 6
+glowLayer1.Color = Color3.new(1, 0, 0)
+glowLayer1.Transparency = 0.7
+glowLayer1.LineJoinMode = Enum.LineJoinMode.Round
+
+local glowLayer2 = Instance.new("UIStroke")
+glowLayer2.Parent = frame
+glowLayer2.Thickness = 9
+glowLayer2.Color = Color3.new(1, 0, 0)
+glowLayer2.Transparency = 0.8
+glowLayer2.LineJoinMode = Enum.LineJoinMode.Round
+
 -- Add text label (inside frame)
 local textLabel = Instance.new("TextLabel")
 textLabel.Parent = frame
@@ -168,8 +183,15 @@ RunService.RenderStepped:Connect(function()
 	stroke.Transparency = transparency
 	
 	-- Update glow stroke transparency and color
-	glowStroke.Color = color
+	glowStroke.Color = color -- glow follows the same color as text (red to yellow)
 	glowStroke.Transparency = 0.3 - (glowIntensity * 0.2) -- glow gets more intense
+	
+	-- Update additional glow layers
+	glowLayer1.Color = color
+	glowLayer1.Transparency = 0.7 - (glowIntensity * 0.3)
+	
+	glowLayer2.Color = color
+	glowLayer2.Transparency = 0.8 - (glowIntensity * 0.4)
 end)
 
 
@@ -187,7 +209,7 @@ imageLabel.Parent = screenGui
 imageLabel.Size = UDim2.new(0, 300, 0, 300)
 imageLabel.Position = UDim2.new(0.5, -150, 0.5, -150)
 imageLabel.BackgroundTransparency = 1
-imageLabel.Image = "rbxassetid://10666680028"
+imageLabel.Image = "rbxassetid://17172616925"
 imageLabel.Visible = true
 
 local dragging = false
