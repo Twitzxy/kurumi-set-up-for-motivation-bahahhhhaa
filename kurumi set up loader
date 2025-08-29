@@ -1,4 +1,3 @@
--- kurumi mouse text bahahahhaha
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
@@ -9,7 +8,6 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "MouseFollowerText"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = game:GetService("CoreGui")
-
 
 local label = Instance.new("TextLabel")
 label.Parent = screenGui
@@ -23,16 +21,13 @@ label.AnchorPoint = Vector2.new(0.5, 0.5)
 label.TextXAlignment = Enum.TextXAlignment.Center
 label.TextYAlignment = Enum.TextYAlignment.Center
 
-
 local stroke = Instance.new("UIStroke")
 stroke.Thickness = 1
 stroke.Color = Color3.new(0, 0, 0)
 stroke.Parent = label
 
-
 local flashSpeed = 3
 local followSmoothness = 0.2 
-
 
 local currentPos = Vector2.new(mouse.X, mouse.Y + 25)
 
@@ -41,7 +36,6 @@ RunService.RenderStepped:Connect(function(dt)
 	currentPos = currentPos:Lerp(targetPos, followSmoothness)
 	label.Position = UDim2.new(0, currentPos.X, 0, currentPos.Y)
 	
-	
 	local alpha = (math.sin(tick() * flashSpeed) + 1) / 2
 	local fadeAlpha = alpha * 0.8
 	label.TextTransparency = fadeAlpha
@@ -49,46 +43,39 @@ RunService.RenderStepped:Connect(function(dt)
 	
 	label.TextColor3 = Color3.new(1, alpha, 0)
 end)
--- kurumi watermark
 
--- Create ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "WatermarkGui"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = game:GetService("CoreGui")
 
--- Create container frame (for background and outline)
 local frame = Instance.new("Frame")
 frame.Parent = screenGui
-frame.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3) -- base gray color
+frame.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
 frame.BorderSizePixel = 0
 frame.Position = UDim2.new(0.5, 0, 0, -50)
 frame.Size = UDim2.new(0, 0, 0, 24)
 
--- Add grayish gradient background
 local gradient = Instance.new("UIGradient")
 gradient.Parent = frame
 gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.new(0.4, 0.4, 0.4)), -- lighter gray
-    ColorSequenceKeypoint.new(1, Color3.new(0.2, 0.2, 0.2))  -- darker gray
+    ColorSequenceKeypoint.new(0, Color3.new(0.4, 0.4, 0.4)),
+    ColorSequenceKeypoint.new(1, Color3.new(0.2, 0.2, 0.2))
 })
-gradient.Rotation = 90 -- vertical gradient
+gradient.Rotation = 90
 
--- Add red outline to frame (thinner)
 local stroke = Instance.new("UIStroke")
-stroke.Thickness = 1 -- thinner inline
+stroke.Thickness = 1
 stroke.Color = Color3.new(1, 0, 0)
 stroke.Parent = frame
 
--- Add glow effect to frame (around the frame)
 local glowStroke = Instance.new("UIStroke")
 glowStroke.Parent = frame
 glowStroke.Thickness = 3
-glowStroke.Color = Color3.new(1, 0, 0) -- red glow
+glowStroke.Color = Color3.new(1, 0, 0)
 glowStroke.Transparency = 0.3
 glowStroke.LineJoinMode = Enum.LineJoinMode.Round
 
--- Add additional glow layers for better effect
 local glowLayer1 = Instance.new("UIStroke")
 glowLayer1.Parent = frame
 glowLayer1.Thickness = 6
@@ -103,11 +90,10 @@ glowLayer2.Color = Color3.new(1, 0, 0)
 glowLayer2.Transparency = 0.8
 glowLayer2.LineJoinMode = Enum.LineJoinMode.Round
 
--- Add text label (inside frame)
 local textLabel = Instance.new("TextLabel")
 textLabel.Parent = frame
 textLabel.BackgroundTransparency = 1
-textLabel.TextColor3 = Color3.new(1, 0, 0) -- initial red
+textLabel.TextColor3 = Color3.new(1, 0, 0)
 textLabel.Font = Enum.Font.Code
 textLabel.TextSize = 16
 textLabel.Position = UDim2.new(0, 10, 0, 0)
@@ -115,23 +101,19 @@ textLabel.Size = UDim2.new(1, -20, 1, 0)
 textLabel.TextXAlignment = Enum.TextXAlignment.Center
 textLabel.TextYAlignment = Enum.TextYAlignment.Center
 
--- Services
 local RunService = game:GetService("RunService")
 local Stats = game:GetService("Stats")
 local MarketplaceService = game:GetService("MarketplaceService")
 
--- FPS calculation
 local lastUpdate = tick()
 local frames = 0
 local fps = 0
 
--- Function to format current time
 local function getTimeString()
 	local now = os.date("*t")
 	return string.format("%02d:%02d:%02d", now.hour, now.min, now.sec)
 end
 
--- Function to get game name by PlaceId
 local function getGameName()
 	local success, result = pcall(function()
 		return MarketplaceService:GetProductInfo(game.PlaceId).Name
@@ -139,13 +121,10 @@ local function getGameName()
 	return success and result or ("PlaceId: " .. tostring(game.PlaceId))
 end
 
--- Smooth flash settings
-local flashSpeed = 2 -- controls speed of glowing
-local fadeMax = 0.7  -- max transparency for fading effect
+local flashSpeed = 2
+local fadeMax = 0.7
 
--- Update watermark continuously
 RunService.RenderStepped:Connect(function()
-	-- FPS calculation
 	frames += 1
 	local now = tick()
 	if now - lastUpdate >= 1 then
@@ -157,7 +136,6 @@ RunService.RenderStepped:Connect(function()
 	local pingStat = Stats.Network.ServerStatsItem["Data Ping"]
 	local ping = pingStat and math.floor(pingStat:GetValue()) or 0
 	
-	-- Update text
 	textLabel.Text = string.format(
 		"kurumi.cc | FPS: %d | Ping: %dms | Game: %s | Time: %s",
 		fps,
@@ -166,38 +144,29 @@ RunService.RenderStepped:Connect(function()
 		getTimeString()
 	)
 	
-	-- Auto-resize frame to fit text + padding
 	local textSize = textLabel.TextBounds
 	frame.Size = UDim2.new(0, textSize.X + 20, 0, textSize.Y + 8)
 	frame.Position = UDim2.new(0.5, -(frame.Size.X.Offset / 2), 0, -50)
 	
-	-- Smooth neon-like flash using sine wave
 	local t = tick() * flashSpeed
-	local glowIntensity = (math.sin(t) + 1) / 2 -- 0 to 1
-	local color = Color3.new(1, glowIntensity, 0) -- red to yellow
-	local transparency = glowIntensity * fadeMax -- fade effect
+	local glowIntensity = (math.sin(t) + 1) / 2
+	local color = Color3.new(1, glowIntensity, 0)
+	local transparency = glowIntensity * fadeMax
 
 	textLabel.TextColor3 = color
 	textLabel.TextTransparency = transparency
 	stroke.Color = color
 	stroke.Transparency = transparency
 	
-	-- Update glow stroke transparency and color
-	glowStroke.Color = color -- glow follows the same color as text (red to yellow)
-	glowStroke.Transparency = 0.3 - (glowIntensity * 0.2) -- glow gets more intense
+	glowStroke.Color = color
+	glowStroke.Transparency = 0.3 - (glowIntensity * 0.2)
 	
-	-- Update additional glow layers
 	glowLayer1.Color = color
 	glowLayer1.Transparency = 0.7 - (glowIntensity * 0.3)
 	
 	glowLayer2.Color = color
 	glowLayer2.Transparency = 0.8 - (glowIntensity * 0.4)
 end)
-
-
-
- -- kurumi image loader 
-
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "KurumiImageGui"
@@ -218,13 +187,11 @@ local dragInput, dragStart, startPos
 imageLabel.Active = true
 imageLabel.Draggable = true
 
-
 local uiStroke = Instance.new("UIStroke")
 uiStroke.Thickness = 1
 uiStroke.Color = Color3.fromRGB(255, 100, 100)
 uiStroke.Transparency = 0.7
 uiStroke.Parent = imageLabel
-
 
 local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 20, 0, 20)
