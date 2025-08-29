@@ -151,6 +151,51 @@ RunService.RenderStepped:Connect(function()
 	stroke.Transparency = transparency
 end)
 
+-- kurumi spinning decal
+local decalScreenGui = Instance.new("ScreenGui")
+decalScreenGui.Name = "KurumiSpinningDecal"
+decalScreenGui.ResetOnSpawn = false
+decalScreenGui.Parent = game:GetService("CoreGui")
+
+-- Create a small frame to hold the decal
+local decalFrame = Instance.new("Frame")
+decalFrame.Parent = decalScreenGui
+decalFrame.Size = UDim2.new(0, 40, 0, 40) -- Smaller size
+decalFrame.Position = UDim2.new(0.5, -20, 0, -80) -- Position above watermark
+decalFrame.BackgroundTransparency = 1
+decalFrame.BorderSizePixel = 0
+
+-- Create the decal
+local decal = Instance.new("Decal")
+decal.Parent = decalFrame
+decal.Texture = "rbxassetid://82890961202436"
+decal.Face = Enum.NormalId.Front
+decal.Size = Vector2.new(1, 1)
+
+-- Add a subtle glow effect
+local glowStroke = Instance.new("UIStroke")
+glowStroke.Thickness = 2
+glowStroke.Color = Color3.fromRGB(255, 100, 100)
+glowStroke.Transparency = 0.5
+glowStroke.Parent = decalFrame
+
+-- Make the decal spin continuously
+local rotationSpeed = 2 -- Speed of rotation
+RunService.RenderStepped:Connect(function()
+    local time = tick() * rotationSpeed
+    local rotation = (time * 360) % 360
+    
+    -- Apply rotation using UIGradient rotation (since we can't rotate decals directly)
+    local gradient = Instance.new("UIGradient")
+    gradient.Rotation = rotation
+    gradient.Parent = decalFrame
+    
+    -- Also add a subtle scale animation
+    local scale = 1 + math.sin(time * 3) * 0.1
+    decalFrame.Size = UDim2.new(0, 40 * scale, 0, 40 * scale)
+    decalFrame.Position = UDim2.new(0.5, -20 * scale, 0, -80 * scale)
+end)
+
  -- kurumi image loader 
 
 
