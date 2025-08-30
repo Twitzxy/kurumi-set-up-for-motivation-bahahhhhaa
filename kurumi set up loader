@@ -44,129 +44,200 @@ RunService.RenderStepped:Connect(function(dt)
 	label.TextColor3 = Color3.new(1, alpha, 0)
 end)
 
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "WatermarkGui"
-screenGui.ResetOnSpawn = false
-screenGui.Parent = game:GetService("CoreGui")
+local watermark = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local UIListLayout = Instance.new("UIListLayout")
+local UIPadding = Instance.new("UIPadding")
+local Frame_2 = Instance.new("Frame")
+local Frame_3 = Instance.new("Frame")
+local Frame_4 = Instance.new("Frame")
+local UIGradient = Instance.new("UIGradient")
+local bar = Instance.new("Frame")
+local UIGradient_2 = Instance.new("UIGradient")
+local info = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local UIPadding_2 = Instance.new("UIPadding")
 
-local frame = Instance.new("Frame")
-frame.Parent = screenGui
-frame.BackgroundColor3 = Color3.new(0.3, 0.3, 0.3)
-frame.BorderSizePixel = 0
-frame.Position = UDim2.new(0.5, 0, 0, -50)
-frame.Size = UDim2.new(0, 0, 0, 24)
+watermark.Name = "kurumi_watermark"
+watermark.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+watermark.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-local gradient = Instance.new("UIGradient")
-gradient.Parent = frame
-gradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.new(0.4, 0.4, 0.4)),
-    ColorSequenceKeypoint.new(1, Color3.new(0.2, 0.2, 0.2))
-})
-gradient.Rotation = 90
+Frame.Parent = watermark
+Frame.AnchorPoint = Vector2.new(0.05, 0.05)
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1
+Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BorderSizePixel = 0
+Frame.Position = UDim2.new(0.0528378375, 0, 0.05, 0)
+Frame.Size = UDim2.new(0, 200, 0, 30) -- Start with smaller size
 
-local stroke = Instance.new("UIStroke")
-stroke.Thickness = 1
-stroke.Color = Color3.new(1, 0, 0)
-stroke.Parent = frame
+UIListLayout.Parent = Frame
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 4)
 
-local glowStroke = Instance.new("UIStroke")
-glowStroke.Parent = frame
-glowStroke.Thickness = 3
-glowStroke.Color = Color3.new(1, 0, 0)
-glowStroke.Transparency = 0.3
-glowStroke.LineJoinMode = Enum.LineJoinMode.Round
+UIPadding.Parent = Frame
+UIPadding.PaddingBottom = UDim.new(0, 4)
 
-local glowLayer1 = Instance.new("UIStroke")
-glowLayer1.Parent = frame
-glowLayer1.Thickness = 6
-glowLayer1.Color = Color3.new(1, 0, 0)
-glowLayer1.Transparency = 0.7
-glowLayer1.LineJoinMode = Enum.LineJoinMode.Round
+Frame_2.Parent = Frame
+Frame_2.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame_2.BorderSizePixel = 0
+Frame_2.Size = UDim2.new(1, -1, 1, 0)
 
-local glowLayer2 = Instance.new("UIStroke")
-glowLayer2.Parent = frame
-glowLayer2.Thickness = 9
-glowLayer2.Color = Color3.new(1, 0, 0)
-glowLayer2.Transparency = 0.8
-glowLayer2.LineJoinMode = Enum.LineJoinMode.Round
+Frame_3.Parent = Frame_2
+Frame_3.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Frame_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame_3.BorderSizePixel = 0
+Frame_3.Position = UDim2.new(0, 1, 0, 1)
+Frame_3.Size = UDim2.new(1, -2, 1, -2)
 
-local textLabel = Instance.new("TextLabel")
-textLabel.Parent = frame
-textLabel.BackgroundTransparency = 1
-textLabel.TextColor3 = Color3.new(1, 0, 0)
-textLabel.Font = Enum.Font.Code
-textLabel.TextSize = 16
-textLabel.Position = UDim2.new(0, 10, 0, 0)
-textLabel.Size = UDim2.new(1, -20, 1, 0)
-textLabel.TextXAlignment = Enum.TextXAlignment.Center
-textLabel.TextYAlignment = Enum.TextYAlignment.Center
+Frame_4.Parent = Frame_3
+Frame_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame_4.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Frame_4.BorderSizePixel = 0
+Frame_4.Position = UDim2.new(0, 1, 0, 1)
+Frame_4.Size = UDim2.new(1, -2, 1, -2)
 
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(29, 29, 29)), ColorSequenceKeypoint.new(1, Color3.fromRGB(20, 20, 20))}
+UIGradient.Parent = Frame_4
+
+bar.Name = "bar"
+bar.Parent = Frame_4
+bar.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+bar.BorderColor3 = Color3.fromRGB(0, 0, 0)
+bar.BorderSizePixel = 0
+bar.Size = UDim2.new(1, 0, 0, 2)
+
+-- Reddish top bar
+UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(200, 50, 50)), ColorSequenceKeypoint.new(1, Color3.fromRGB(150, 30, 30))}
+UIGradient_2.Parent = bar
+
+info.Name = "info"
+info.Parent = Frame_4
+info.AnchorPoint = Vector2.new(0.5, 0.5)
+info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+info.BackgroundTransparency = 1
+info.BorderColor3 = Color3.fromRGB(0, 0, 0)
+info.BorderSizePixel = 0
+info.Position = UDim2.new(0.5, 0, 0.5, 0)
+info.Size = UDim2.new(1, 0, 0, 15)
+
+TextLabel.Parent = info
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1
+TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.BorderSizePixel = 0
+TextLabel.Size = UDim2.new(1, 0, 1, 0)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+TextLabel.TextSize = 16
+
+UIPadding_2.Parent = TextLabel
+UIPadding_2.PaddingLeft = UDim.new(0, 5)
+
+-- Dragging functionality
+local UserInputService = game:GetService("UserInputService")
+local dragging
+local dragInput
+local dragStart
+local startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    Frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+end
+
+Frame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = Frame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+Frame.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
+
+-- FPS Counter
 local RunService = game:GetService("RunService")
-local Stats = game:GetService("Stats")
+local fps = 0
+local fpsCount = 0
+local fpsTime = 0
+
+RunService.Heartbeat:Connect(function()
+    fpsCount = fpsCount + 1
+    fpsTime = fpsTime + RunService.Heartbeat:Wait()
+    
+    if fpsTime >= 1 then
+        fps = fpsCount
+        fpsCount = 0
+        fpsTime = 0
+    end
+end)
+
+-- Function to resize frame based on text
+local function resizeFrame()
+    local textSize = TextLabel.TextBounds
+    local newWidth = math.max(textSize.X + 20, 200) -- Minimum width of 200, add 20px padding
+    Frame.Size = UDim2.new(0, newWidth, 0, 30)
+end
+
 local MarketplaceService = game:GetService("MarketplaceService")
 
-local lastUpdate = tick()
-local frames = 0
-local fps = 0
-
-local function getTimeString()
-	local now = os.date("*t")
-	return string.format("%02d:%02d:%02d", now.hour, now.min, now.sec)
-end
-
+-- Function to get actual game name
 local function getGameName()
-	local success, result = pcall(function()
-		return MarketplaceService:GetProductInfo(game.PlaceId).Name
-	end)
-	return success and result or ("PlaceId: " .. tostring(game.PlaceId))
+    local success, result = pcall(function()
+        return MarketplaceService:GetProductInfo(game.PlaceId).Name
+    end)
+    return success and result or ("PlaceId: " .. tostring(game.PlaceId))
 end
 
-local flashSpeed = 2
-local fadeMax = 0.7
+-- Update function with all requested information
+local function updateWatermark()
+    while true do
+        local currentDateTime = os.date("*t")
+        local formattedDate = string.format("%s %d %d", 
+            ({"January", "February", "March", "April", "May", "June", 
+              "July", "August", "September", "October", "November", "December"})[currentDateTime.month],
+            currentDateTime.day,
+            currentDateTime.year)
+        local formattedTime = os.date("%H:%M:%S")
+        
+        local player = game.Players.LocalPlayer
+        local username = player.Name
+        local userId = player.UserId
+        local gameName = getGameName()
+        
+        -- Get ping (approximate)
+        local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue())
+        
+        TextLabel.Text = string.format("kurumi.cc | FPS: %d | Ping: %dms | %s | %s (%d) | %s - %s", 
+            fps, ping, gameName, username, userId, formattedDate, formattedTime)
+        
+        -- Resize frame after text update
+        wait(0.1) -- Small delay to ensure text is rendered
+        resizeFrame()
+        
+        wait(0.9) -- Wait remaining time to complete 1 second cycle
+    end
+end
 
-RunService.RenderStepped:Connect(function()
-	frames += 1
-	local now = tick()
-	if now - lastUpdate >= 1 then
-		fps = frames
-		frames = 0
-		lastUpdate = now
-	end
-	
-	local pingStat = Stats.Network.ServerStatsItem["Data Ping"]
-	local ping = pingStat and math.floor(pingStat:GetValue()) or 0
-	
-	textLabel.Text = string.format(
-		"kurumi.cc | FPS: %d | Ping: %dms | Game: %s | Time: %s",
-		fps,
-		ping,
-		getGameName(),
-		getTimeString()
-	)
-	
-	local textSize = textLabel.TextBounds
-	frame.Size = UDim2.new(0, textSize.X + 20, 0, textSize.Y + 8)
-	frame.Position = UDim2.new(0.5, -(frame.Size.X.Offset / 2), 0, -50)
-	
-	local t = tick() * flashSpeed
-	local glowIntensity = (math.sin(t) + 1) / 2
-	local color = Color3.new(1, glowIntensity, 0)
-	local transparency = glowIntensity * fadeMax
-
-	textLabel.TextColor3 = color
-	textLabel.TextTransparency = transparency
-	stroke.Color = color
-	stroke.Transparency = transparency
-	
-	glowStroke.Color = color
-	glowStroke.Transparency = 0.3 - (glowIntensity * 0.2)
-	
-	glowLayer1.Color = color
-	glowLayer1.Transparency = 0.7 - (glowIntensity * 0.3)
-	
-	glowLayer2.Color = color
-	glowLayer2.Transparency = 0.8 - (glowIntensity * 0.4)
-end)
+coroutine.wrap(updateWatermark)()
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "KurumiImageGui"
