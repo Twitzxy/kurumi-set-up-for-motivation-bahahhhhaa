@@ -69,7 +69,7 @@ Frame.BackgroundTransparency = 1
 Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Frame.BorderSizePixel = 0
 Frame.Position = UDim2.new(0.0528378375, 0, 0.05, 0)
-Frame.Size = UDim2.new(0, 200, 0, 30) -- Start with smaller size
+Frame.Size = UDim2.new(0, 200, 0, 30)
 
 UIListLayout.Parent = Frame
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -108,7 +108,7 @@ bar.BorderColor3 = Color3.fromRGB(0, 0, 0)
 bar.BorderSizePixel = 0
 bar.Size = UDim2.new(1, 0, 0, 2)
 
--- Reddish top bar
+
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(200, 50, 50)), ColorSequenceKeypoint.new(1, Color3.fromRGB(150, 30, 30))}
 UIGradient_2.Parent = bar
 
@@ -135,7 +135,7 @@ TextLabel.TextSize = 16
 UIPadding_2.Parent = TextLabel
 UIPadding_2.PaddingLeft = UDim.new(0, 5)
 
--- Dragging functionality
+
 local UserInputService = game:GetService("UserInputService")
 local dragging
 local dragInput
@@ -173,7 +173,7 @@ UserInputService.InputChanged:Connect(function(input)
     end
 end)
 
--- FPS Counter
+
 local RunService = game:GetService("RunService")
 local fps = 0
 local fpsCount = 0
@@ -190,16 +190,16 @@ RunService.Heartbeat:Connect(function()
     end
 end)
 
--- Function to resize frame based on text
+
 local function resizeFrame()
     local textSize = TextLabel.TextBounds
-    local newWidth = math.max(textSize.X + 20, 200) -- Minimum width of 200, add 20px padding
+    local newWidth = math.max(textSize.X + 20, 200)
     Frame.Size = UDim2.new(0, newWidth, 0, 30)
 end
 
 local MarketplaceService = game:GetService("MarketplaceService")
 
--- Function to get actual game name
+
 local function getGameName()
     local success, result = pcall(function()
         return MarketplaceService:GetProductInfo(game.PlaceId).Name
@@ -207,7 +207,28 @@ local function getGameName()
     return success and result or ("PlaceId: " .. tostring(game.PlaceId))
 end
 
--- Update function with all requested information
+
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+local function onCharacterAdded(character)
+
+    character:WaitForChild("Humanoid")
+
+    if not watermark.Parent then
+        watermark.Parent = localPlayer:WaitForChild("PlayerGui")
+    end
+end
+
+
+localPlayer.CharacterAdded:Connect(onCharacterAdded)
+
+
+if localPlayer.Character then
+    onCharacterAdded(localPlayer.Character)
+end
+
+
 local function updateWatermark()
     while true do
         local currentDateTime = os.date("*t")
@@ -223,17 +244,17 @@ local function updateWatermark()
         local userId = player.UserId
         local gameName = getGameName()
         
-        -- Get ping (approximate)
+
         local ping = math.floor(game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue())
         
         TextLabel.Text = string.format("kurumi.cc | FPS: %d | Ping: %dms | %s | %s (%d) | %s - %s", 
             fps, ping, gameName, username, userId, formattedDate, formattedTime)
         
-        -- Resize frame after text update
-        wait(0.1) -- Small delay to ensure text is rendered
+
+        wait(0.1)
         resizeFrame()
         
-        wait(0.9) -- Wait remaining time to complete 1 second cycle
+        wait(0.9)
     end
 end
 
